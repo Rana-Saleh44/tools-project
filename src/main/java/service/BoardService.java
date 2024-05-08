@@ -60,6 +60,7 @@ public class BoardService {
 	                Board.class)
 	                .setParameter("teamLeaderId", teamLeaderId)
 	                .getResultList();
+			messageClient.sendMessage("Boards create by " +user.getName()+" are returned");
 	
 	        if (boards.isEmpty()) {
 	            return Response.status(Response.Status.NOT_FOUND).entity("No boards found for the team leader.").build();
