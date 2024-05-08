@@ -1,7 +1,6 @@
 package model;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +13,7 @@ public class Board implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long board_id;
 	
 	@Column(unique = true, nullable = false)
@@ -29,20 +28,18 @@ public class Board implements Serializable{
 	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
 	List <ListEntity> lists = new ArrayList<>();
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "board_collaborators",
 			joinColumns = @JoinColumn(name = "board_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id"))
-	Set<User> collaborators;
-//	public Board() {
-//		this.lists = new ArrayList<>();
-//		this.collaborators = new HashSet<>();
-//	}
-	
-	public Board() {}
+	List<User> collaborators = new ArrayList<>();
+	public Board() {
+		this.lists = new ArrayList<>();
+	}
 
-	public void setCollaborators(Set<User> collaborators) {
+
+	public void setCollaborators(List<User> collaborators) {
 		this.collaborators = collaborators;
 	}
 
@@ -73,7 +70,7 @@ public class Board implements Serializable{
 		this.lists = lists;
 	}
 
-	public Set<User> getCollaborators() {
+	public List<User> getCollaborators() {
 		return collaborators;
 	}
 

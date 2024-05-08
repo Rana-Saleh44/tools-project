@@ -1,5 +1,7 @@
 package model;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Stateless;
@@ -13,7 +15,7 @@ public class User implements Serializable{
 	static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	
 	@Column(unique = true, nullable = false)
@@ -36,7 +38,7 @@ public class User implements Serializable{
 		this.role = role;
 	}
 	@ManyToMany(mappedBy = "collaborators")
-	Set<Board> boards;
+	List<Board> boards = new ArrayList<>();
 	
 	public User() {}
 	
