@@ -104,6 +104,7 @@ public class BoardService {
 		}
 		try {
 			entityManager.remove(board);
+			messageClient.sendMessage("Board " + board.getName()+" is deleted successfully." );
 			entityManager.flush();
 			return Response.status(Response.Status.OK).entity("Board deleted successfully.").build();
 		} catch (Exception e) {
