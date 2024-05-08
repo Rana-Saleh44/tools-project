@@ -2,8 +2,6 @@ package service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -26,17 +24,17 @@ public class BoardService {
 		long count = entityManager.createQuery("SELECT COUNT(b) FROM Board b WHERE b.name = :name", Long.class)
                 .setParameter("name", name)
                 .getSingleResult();
+		User u = entityManager.find(User.class, userId);
+		if (u == null) {
+			return Response.status(Response.Status.NOT_FOUND).entity("user not found.").build();
+		}
+		if (u.getRole().equals("Collaborator")) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
+		}
 		if (count > 0) {
 			return Response.status(Response.Status.CONFLICT).entity("A board with the same name already exists!").build();
 		}
 		try {
-			User u = entityManager.find(User.class, userId);
-			if (u == null) {
-				return Response.status(Response.Status.NOT_FOUND).entity("user not found.").build();
-			}
-			if (u.getRole().equals("Collaborator")) {
-				return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
-			}
 			Board board = new Board();
 			board.setName(name);
 			board.setTeamLeader(u);
