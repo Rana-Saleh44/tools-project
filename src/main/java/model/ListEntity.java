@@ -11,7 +11,7 @@ public class ListEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long list_id;
 	
 	@Column(unique = true, nullable = false)
