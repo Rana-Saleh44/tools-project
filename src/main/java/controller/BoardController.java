@@ -1,5 +1,6 @@
 package controller;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import service.BoardService;
 
+@RolesAllowed("TeamLeader")
 @Path("/boards")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -36,8 +38,8 @@ public class BoardController {
 
     @PUT
     @Path("/invite/{boardId}/{inviterId}/{teamLeaderId}")
-    public Response inviteCollaborator(@PathParam("boardId") Long boardId, @PathParam("userId") Long userId, @PathParam("teamLeader") Long teamLeaderId) {
-        return boardService.inviteCollaborator(boardId, userId, teamLeaderId);
+    public Response inviteCollaborator(@PathParam("boardId") Long boardId, @PathParam("inviterId") Long inviterId, @PathParam("teamLeaderId") Long teamLeaderId) {
+        return boardService.inviteCollaborator(boardId, inviterId, teamLeaderId);
     }
 
     @DELETE

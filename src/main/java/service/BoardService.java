@@ -7,7 +7,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import javax.ws.rs.core.Response;
 
 import model.Board;
@@ -15,7 +14,6 @@ import model.BoardDTO;
 import model.User;
 
 @Stateless
-@RolesAllowed("TeamLeader")
 public class BoardService {
 
 	@PersistenceContext(unitName = "hello")

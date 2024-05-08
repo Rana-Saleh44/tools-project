@@ -33,7 +33,7 @@ public class UserService {
 		try {
 			User user = getUserByEmail(loginUser.getEmail());
 			if(!user.getPassword().equals(loginUser.getPassword())) {
-				return Response.status(Response.Status.NOT_FOUND).entity("USer not found!").build();
+				return Response.status(Response.Status.NOT_FOUND).entity("User not found!").build();
 			}
 			//messageClient.sendMessage("User logged in: " + user.getName());
 			return Response.status(Response.Status.OK).entity("User logged in successfully").build();
