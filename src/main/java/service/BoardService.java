@@ -5,10 +5,12 @@ import java.util.stream.Collectors;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.core.Response;
 
+import messagingSystem.Client;
 import model.Board;
 import model.BoardDTO;
 import model.User;
@@ -18,7 +20,8 @@ public class BoardService {
 
 	@PersistenceContext(unitName = "hello")
 	EntityManager entityManager;
-	
+	@Inject
+	Client messageClient;
 	public Response createBoard(Long userId, String name) {
 		long count = entityManager.createQuery("SELECT COUNT(b) FROM Board b WHERE b.name = :name", Long.class)
                 .setParameter("name", name)
@@ -38,6 +41,7 @@ public class BoardService {
 			board.setName(name);
 			board.setTeamLeader(u);
 			entityManager.persist(board);
+			messageClient.sendMessage("Board created: " + board.getName());
 			entityManager.flush();
 			return Response.status(Response.Status.OK).entity(board).build();
 		} catch (Exception e) {
@@ -81,6 +85,7 @@ public class BoardService {
 		}
 		board.getCollaborators().add(collaborator);
 		entityManager.merge(board);
+		messageClient.sendMessage("Collaborator added: " + collaborator.getName());
 		entityManager.flush();
 		return Response.status(Response.Status.OK).entity("Collaborator invited successfully.").build();
 	}
